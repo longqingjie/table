@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>使用 dataset 管理数据第三部分-encode映射</title>
+	<!-- 引入echarts.js -->
+	<script src="../js/echarts.js"></script>
+</head>
+<body>
+	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+    	var myChart = echarts.init(document.getElementById('main'));
+
+		var option = {
+			tooltip:{},
+		    dataset: {
+		    	//数据源
+		        source: [
+		            ['score', 'amount', 'product'],
+		            [89.3, 58212, 'Matcha Latte'],
+		            [57.1, 78254, 'Milk Tea'],
+		            [74.4, 41032, 'Cheese Cocoa'],
+		            [50.1, 12755, 'Cheese Brownie'],
+		            [89.7, 20145, 'Matcha Cocoa'],
+		            [68.1, 79146, 'Tea'],
+		            [19.6, 91852, 'Orange Juice'],
+		            [10.6, 101852, 'Lemon Juice'],
+		            [32.7, 20112, 'Walnut Brownie']
+		        ]
+		    },
+		    //视图
+		    grid: {containLabel: true},
+		    //x轴映射amount
+		    xAxis: {},
+		    //y轴对应类目表
+		    yAxis: {type: 'category'},
+		    //用明暗度来表示分数高低
+		    visualMap: {
+		    	//方向
+		        orient: 'horizontal',
+		        //位置
+		        left: 'center',
+		        min: 10,
+		        max: 100,
+		        text: ['High Score', 'Low Score'],
+		        // 序号0代表第一列，维度1
+		        //dimension: 'score',
+		        dimension: 0,
+		        inRange: {
+		            color: ['#D7DA8B', '#E15457']
+		        }
+		    },
+		    series: [
+		        {
+		            type: 'bar',
+		            encode: {
+		                // x轴映射amount.
+		                x: 'amount',
+		                // y轴映射product
+		                y: 'product'
+		            }
+		        }
+		    ]
+		};
+
+		myChart.setOption(option);
+    </script>
+</body>
+</html>

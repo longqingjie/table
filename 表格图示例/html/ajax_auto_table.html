@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>数据的动态更新</title>
+	<!-- 引入echarts.js -->
+	<script src="../js/echarts.js"></script>
+	<script src="../js/jquery.js"></script>
+</head>
+<body>
+	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+	<h1 id="dateDisplay"></h1>
+    <script type="text/javascript">
+    
+    	var myChart = echarts.init(document.getElementById('main'));
+    	//+是用于将日期转化成number型
+    	var base = +new Date();
+    	//console.log(base);
+    	//一天的ms数
+		var oneDay = 24 * 3600 * 1000;
+		//定义一个date数组
+		var date = [];
+
+		//随机数据
+		var data = [Math.random() * 150];
+		console.log(data);
+
+		//转化日期
+		var now = new Date(base);
+		//console.log(now);
+
+		function addData(shift) {
+		    now = [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/');
+		    //console.log(now);
+		    //将转化好的日期放入date数组中
+		    date.push(now);
+		    //
+		    data.push((Math.random() - 0.4) * 10 + data[data.length - 1]);
+		    console.log(data);
+		    if (shift) {
+		    	//shift()方法：把数组的第一个元素从其中删除，并返回第一个元素的值
+		        date.shift();
+		        data.shift();
+		    }
+
+		    now = new Date(+new Date(now) + oneDay);
+		}
+
+		for (var i = 1; i < 100; i++) {
+		    addData();
+		}
+
+		option = {
+		    xAxis: {
+		        type: 'category',
+		        boundaryGap: false,
+		        data: date
+		    },
+		    yAxis: {
+		        boundaryGap: [0, '50%'],
+		        type: 'value'
+		    },
+		    series: [
+		        {
+		            name:'成交',
+		            type:'line',
+		            smooth:true,
+		            symbol: 'none',
+		            stack: 'a',
+		            areaStyle: {
+		                normal: {}
+		            },
+		            data: data
+		        }
+		    ]
+		};
+		myChart.setOption(option);
+
+		setInterval(function () {
+		    addData(true);
+		    myChart.setOption({
+		        xAxis: {
+		            data: date
+		        },
+		        series: [{
+		            name:'成交',
+		            data: data,
+		        }]
+		    });
+		    //$("#dateDisplay").html(now);
+		}, 500);
+
+	//});
+    </script>
+</body>
+</html>

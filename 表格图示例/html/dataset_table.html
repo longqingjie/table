@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>使用 dataset 管理数据</title>
+	<!-- 引入echarts.js -->
+	<script src="../js/echarts.js"></script>
+</head>
+<body>
+	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+    	var myChart = echarts.init(document.getElementById('main'));
+    	/*//未使用dataset管理的数据
+    	var option = {
+		    xAxis: {
+		        type: 'category',
+		        data: ['Matcha Latte', 'Milk Tea', 'Cheese Cocoa', 'Walnut Brownie']
+		    },
+		    yAxis: {},
+		    series: [
+		        {
+		            type: 'bar',
+		            name: '2015',
+		            data: [89.3, 92.1, 94.4, 85.4],
+		            label:{
+		            	show:true,
+		            	formatter:name
+		            }
+
+		        },
+		        {
+		            type: 'bar',
+		            name: '2016',
+		            data: [95.8, 89.4, 91.2, 76.9]
+		        },
+		        {
+		            type: 'bar',
+		            name: '2017',
+		            data: [97.7, 83.1, 92.5, 78.1]
+		        }
+		    ]
+		}*/
+
+		option = {
+			//筛选栏
+		    legend: {},
+		    //提示框
+		    tooltip: {},
+		    dataset: {
+		        // 提供一份数据。
+		        source: [
+		            ['product', '2015', '2016', '2017'],
+		            ['Matcha Latte', 43.3, 85.8, 93.7],
+		            ['Milk Tea', 83.1, 73.4, 55.1],
+		            ['Cheese Cocoa', 86.4, 65.2, 82.5],
+		            ['Walnut Brownie', 72.4, 53.9, 39.1]
+		        ]
+		    },
+		    // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
+		    xAxis: {type: 'category'},
+		    // 声明一个 Y 轴，数值轴。
+		    yAxis: {},
+		    // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
+		    series: [
+		        {type: 'bar'},
+		        {type: 'bar'},
+		        {type: 'bar'}
+		    ]
+		}
+		myChart.setOption(option);
+    </script>
+</body>
+</html>

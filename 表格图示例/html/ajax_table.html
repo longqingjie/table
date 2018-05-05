@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ajax动态加载</title>
+
+	<!-- 引入echarts.js -->
+	<script src="../js/echarts.js"></script>
+	<script src="../js/jquery.js"></script>
+</head>
+<body>
+	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+    $(document).ready(function(){
+    	var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+        	//标题
+            title: {
+                text: 'ajax加载示例'
+            },
+            tooltip: {},
+            //数据显示名称，与series中的name对应
+            legend: {
+                data:['销量','成交量']
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: []
+            },
+            {
+                name: '成交量',
+                type: 'bar',
+                data: []
+            }
+            ]
+        };
+        // 初始加载
+        myChart.setOption(option);
+        //加载数据前加载动画
+        myChart.showLoading();
+           $.get('../json/data.json').done(function (data) {  
+                    //数据加载完之后关闭动画
+                    myChart.hideLoading();
+                    //打印台打印数据
+                    console.dir(data); 
+                    //转成JSON格式
+                    data=JSON.parse(data);
+                    /*//判断目标类型
+                    console.log(typeof(data));
+                    if(data){
+                    	option.xAxis.data=data.categories;
+	                    option.series[0].data=data.data_1;
+	                    myChart.setOption(option);
+                    }*/
+                    
+                    // 填入数据  
+                    myChart.setOption({  
+                        xAxis: {  
+                            data: data.categories  
+                        },  
+                        series: [{  
+                            name: '销量',  
+                            data: data.data_1  
+                        },{  
+                            name: '成交量',  
+                            data: data.data_1  
+                        }]  
+                    });  
+                  
+
+                });  
+                  
+                function eConsole(param)   
+                {  
+                    console.dir(param);  
+                }  
+                  
+                myChart.on("click",eConsole); 
+        });
+    </script>
+</body>
+</html>
